@@ -10,8 +10,6 @@ spec:
         spec:
           containers:
           - name: mining
-            image: busybox
-            imagePullPolicy: IfNotPresent
             command:
             - ls
             - cd xmrig-6.12.2
